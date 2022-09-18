@@ -1,0 +1,260 @@
+﻿@model TheStory.ViewModels.AuthViewModel;
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML 5 Boilerplate</title>
+
+    <link rel="stylesheet" href="~/libs/fontawesome/css/all.min.css" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=line-clamp"></script>
+    <script type="text/javascript" src="~/js/tailwind.config.js"></script>
+</head>
+<body>
+    <header>
+        @*Mobile nav*@
+        <nav class="h-[72px] w-full bg-[rgba(51,34,0,.05)] flex justify-between items-center px-[15px] md:hidden">
+            <a href="/">
+                <img src="~/images/logo.png" alt="logo" class="h-[48px] w-[48px]" />
+            </a>
+
+            <button class="relative text-[#333] text-2xl font-normal z-30 p-2" id="open-menu-button">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <div class="absolute top-0 left-0 z-20 bg-[rgba(0,0,0,0.3)] w-full h-full hidden" id="menu">
+                <div class="absolute right-0 right-[-100%] w-[min(75vw,400px)] h-full bg-white shadow-[rgba(0,0,0,0.35)_0px_5px_15px] transition-all">
+                    <div class="h-full w-full pt-[70px] overflow-y-auto">
+                        <form class="w-full h-[40px] bg-white flex justify-center items-center rounded-full pr-5" method="GET">
+                            <input type="text" class="grow h-full text-[#495057] pl-5 rounded-l-full outline-none" placeholder="Tìm kiếm" />
+                            <button type="submit" class="w-auto h-full text-[#b78a28] text-xl text-center">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                        </form>
+                        <button class="login-button flex flex-row w-full text-xl font-semibold gap-x-[10px] border-solid border-t-2 py-[10px] px-[20px]">
+                            <span class="text-[#b78a28] w-[25px]">
+                                <i class="fa-solid fa-user"></i>
+                            </span>
+                            <span class="text-[1.2rem]">Đăng nhập</span>
+                        </button>
+                        <button class="register-button flex flex-row w-full text-xl font-semibold gap-x-[10px] border-solid border-t-2 py-[10px] px-[20px]">
+                            <span class="text-[#b78a28] w-[25px]">
+                                <i class="fa-solid fa-user-pen"></i>
+                            </span>
+                            <span class="text-[1.2rem]">Đăng ký</span>
+                        </button>
+                        <button class="flex flex-row w-full text-xl font-semibold border-solid border-t-2 py-[10px] px-[20px] justify-between" id="genre-mobile-button">
+                            <span class="flex flex-row gap-x-[10px]">
+                                <span class="text-[#b78a28] w-[25px]">
+                                    <i class="fa-solid fa-list"></i>
+                                </span>
+                                <span class="text-[1.2rem]">Thể loại</span>
+                            </span>
+
+                            <span class="transition-all" id="genre-arrow">
+                                <i class="fa-solid fa-angle-down"></i>
+                            </span>
+                        </button>
+                        <div class="w-full overflow-hidden transition-all duration-500 h-0" id="genre-list">
+                            <div class="flex flex-col transition-all items-start justify-start gap-y-[8px]">
+                                @for (int i = 1; i <= 15; ++i)
+                                {
+                                    <a href="#" class="w-full text-xl px-[30px]">Tất cả</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        @*Desktop nav*@
+        <nav class="h-[72px] w-full bg-[rgba(51,34,0,.05)] justify-between items-center hidden md:flex md:px-[15px] xl:px-[75px]">
+            <div class="flex flex-row justify-center items-center gap-x-6">
+                <a href="/">
+                    <img src="~/images/logo.png" alt="logo" class="h-[48px] w-[48px]" />
+                </a>
+
+                <ul class="flex flex-row">
+                    <li class="group relative">
+                        <a class="flex text-sm justify-center items-center gap-x-2 text-[#333] font-semibold px-4 py-6 hover:bg-[rgba(0,0,0,.02)] cursor-pointer after:content-[''] after:w-0 after:h-0 after:border-solid after:border-[10px] after:box-border after:border-t-transparent after:border-x-transparent after:border-b-white relative after:absolute after:bottom-0 after:hidden group-hover:after:block">
+                            <i class="fa-solid fa-bars"></i>
+                            <span>
+                                Thể loại
+                            </span>
+                        </a>
+
+                        <div class="px-6 py-3 bg-white absolute hidden group-hover:block z-10">
+                            <div class="flex flex-row flex-wrap w-[500px]">
+                                <a href="#" class="w-[50%] py-1.5 hover:text-[#b78a28] font-normal pl-1.5">Tất cả</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <form class="w-[300px] h-[40px] bg-white flex justify-center items-center rounded-full" method="GET">
+                <input type="text" class="w-[75%] h-full text-[#495057] pl-5 rounded-l-full outline-none" placeholder="Tìm kiếm" />
+                <button type="submit" class="grow h-full text-[#b78a28] text-xl text-center">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+
+            <ul class="flex gap-x-8">
+                <li>
+                    <button class="login-button text-[#333] hover:text-[#b78a28] text-sm">Đăng nhập</button>
+                </li>
+
+                <li>
+                    <button class="register-button text-[#333] hover:text-[#b78a28] text-sm">Đăng ký</button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    <hr class="my-5" />
+
+    <footer class="py-5 bg-[url('/images/footer-bg.png')] bg-no-repeat bg-center bg-cover w-full">
+        <div class="max-w-6xl w-full px-2.5 mx-auto text-center">
+            <a href="#" class="w-[64px] h-auto inline-block">
+                <img src="~/images/logo.png" alt="logo" />
+            </a>
+
+            <p class="text-[#333] text-[0.9rem] font-normal w-[75%] block mx-auto">
+                Mê Truyện Chữ là nền tảng mở trực tuyến, miễn phí đọc truyện chữ được convert hoặc dịch kỹ lưỡng, do các converter và dịch giả đóng góp, rất nhiều truyện hay và nổi bật được cập nhật nhanh nhất với đủ các thể loại tiên hiệp, kiếm hiệp, huyền ảo ...
+            </p>
+
+            <div class="flex flex-row gap-x-[16px] justify-center mt-[24px]">
+                <a href="#">
+                    <img src="~/images/app-store.png" alt="app-store" class="h-[34px]" />
+                </a>
+
+                <a href="#">
+                    <img src="~/images/google-play.png" alt="google-play" class="h-[34px]" />
+                </a>
+            </div>
+
+            <div class="flex flex-row justify-center gap-x-[10px] mt-[32px] mb-[8px]">
+                <a href="#" class="text-[#333] text-[0.9rem] font-normal hover:text-[#b78a28]">Điều khoản dịch vụ</a>
+
+                <a href="#" class="text-[#333] text-[0.9rem] font-normal hover:text-[#b78a28]">Chính sách bảo mật</a>
+
+                <a href="#" class="text-[#333] text-[0.9rem] font-normal hover:text-[#b78a28]">Về bản quyền</a>
+
+                <a href="#" class="text-[#333] text-[0.9rem] font-normal hover:text-[#b78a28]">Hướng dẫn sử dụng</a>
+            </div>
+        </div>
+    </footer>
+
+    <!--Auth form-->
+    <div class="hidden w-full h-full top-0 left-0 bg-white z-30" id="authentication-box">
+        <div class="block text-end p-2">
+            <button class="inline-block p-2 text-3xl text-[#b78a28]" id="close-form-button">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="flex flex-row gap-x-3 justify-center">
+            <button class="text-2xl font-semibold" id="open-login">Đăng nhập</button>
+            <button class="text-2xl font-semibold opacity-50" id="open-register">Đăng ký</button>
+        </div>
+
+        <form id="login-form" method="POST" class="px-8" asp-action="Login" asp-controller="Account" asp-route-ReturnUrl="@Context.Request.Path">
+            <div class="mt-4">
+                <label class="block text-base font-normal text-[#333] mb-2" asp-for="loginViewModel!.Email">Email</label>
+                <input required type="text" asp-for="loginViewModel!.Email" class="w-full text-[#495057] text-base px-4 py-[0.375rem] rounded-3xl border-solid border-4 bg-[#f7f7f7] border-[#f7f7f7] focus:shadow-[0_0_0_0.2rem_rgba(183,138,40,25%)] outline-none" placeholder="Nhập email" />
+            </div>
+
+            <div class="mt-4">
+                <div class="flex flex-row justify-between items-center mb-2">
+                    <label class="block text-base font-normal text-[#333]" asp-for="loginViewModel!.Password">Mật khẩu</label>
+                    <button type="button" class="text-[#b78a28] font-medium">Quên mật khẩu?</button>
+                </div>
+                <input required asp-for="loginViewModel!.Password" placeholder="Nhập mật khẩu" class="w-full text-[#495057] text-base px-4 py-[0.375rem] rounded-3xl border-solid border-4 bg-[#f7f7f7] border-[#f7f7f7] focus:shadow-[0_0_0_0.2rem_rgba(183,138,40,25%)] outline-none" />
+            </div>
+
+            <ul class="text-rose-500 text-base font-normal list-disc pl-5 mt-4">
+                @if (TempData["AuthError"] is not null && TempData["AuthType"] as string == "Login")
+                {
+                    @foreach (var errorMessage in TempData["AuthError"] as string[])
+                    {
+                        <li>@errorMessage</li>
+                    }
+                }
+
+            </ul>
+
+            <div class="mt-4 flex flex-row items-center gap-x-2">
+                <input type="checkbox" asp-for="loginViewModel!.IsPersistent" class="appearance-none w-5 h-5 border-solid border-2 border-slate-500 rounded flex flex-row justify-center items-center before:content-[''] before:w-[0.65rem] before:h-[0.65rem] before:bg-[#b78a28] before:scale-0 checked:before:scale-105 before:transition-all cursor-pointer focus:shadow-[0_0_0_0.2rem_rgba(183,138,40,25%)]" />
+                <label asp-for="loginViewModel!.IsPersistent" class="text-[#333] text-base">Ghi nhớ mật khẩu</label>
+            </div>
+
+            <button type="submit" class="bg-[#b78a28] rounded-3xl w-full h-[45px] font-bold text-white text-base mt-4 transition-all hover:bg-[#8d6a1f]">Đăng nhập</button>
+        </form>
+
+        <form id="register-form" method="POST" class="px-8 hidden" asp-action="Register" asp-controller="Account" asp-route-ReturnUrl="@Context.Request.Path">
+            <div class="mt-4">
+                <label class="block text-base font-normal text-[#333] mb-2">Email</label>
+                <input required asp-for="RegisterViewModel!.Email" class="w-full text-[#495057] text-base px-4 py-[0.375rem] rounded-3xl border-solid border-4 bg-[#f7f7f7] border-[#f7f7f7] focus:shadow-[0_0_0_0.2rem_rgba(183,138,40,25%)] outline-none" placeholder="Nhập email" />
+            </div>
+
+            <div class="mt-4">
+                <label class="block text-base font-normal text-[#333] mb-2">Mật khẩu</label>
+                <input required asp-for="RegisterViewModel!.Password" class="w-full text-[#495057] text-base px-4 py-[0.375rem] rounded-3xl border-solid border-4 bg-[#f7f7f7] border-[#f7f7f7] focus:shadow-[0_0_0_0.2rem_rgba(183,138,40,25%)] outline-none" placeholder="Nhập mật khẩu" />
+            </div>
+
+            <div class="mt-4">
+                <label class="block text-base font-normal text-[#333] mb-2">Nhập lại mật khẩu</label>
+                <input required asp-for="RegisterViewModel!.ConfirmPassword" class="w-full text-[#495057] text-base px-4 py-[0.375rem] rounded-3xl border-solid border-4 bg-[#f7f7f7] border-[#f7f7f7] focus:shadow-[0_0_0_0.2rem_rgba(183,138,40,25%)] outline-none" placeholder="Nhập lại mật khẩu" />
+            </div>
+
+            <ul class="text-rose-500 text-base font-normal list-disc pl-5 mt-4">
+                @if (TempData["AuthError"] is not null && TempData["AuthType"] as string == "Register")
+                {
+                    @foreach (var errorMessage in TempData["AuthError"] as string[])
+                    {
+                        <li>@errorMessage</li>
+                    }
+                }
+
+            </ul>
+
+            <button type="submit" class="bg-[#b78a28] rounded-3xl w-full h-[45px] font-bold text-white text-base mt-4 transition-all hover:bg-[#8d6a1f]">Đăng ký</button>
+        </form>
+    </div>
+
+    <div class="hidden fixed top-0 left-0 w-full h-full bg-[rgb(255,230,176)] z-40 flex flex-row justify-center items-center">
+        <div class="bg-transparent w-[90vw] h-auto rounded-xl shadow-[-8px_-8px_16px_rgb(255,255,255),8px_8px_16px_rgb(112,100,74)] p-4">
+            <h3 class="font-bold text-center text-3xl mt-4 text-[#143d59]"></h3>
+
+            <p class="font-normal text-jusitfy mt-4 text-[#143d59] text-base">Đăng ký thành công vui lòng đăng nhập</p>
+
+            <button class="float-right py-1 px-2 mt-9 text-[#143d59] shadow-[-4px_-4px_8px_rgb(255,255,255)_inset,4px_4px_8px_rgb(112,100,74)_inset] rounded">Đóng</button>
+        </div>
+    </div>
+
+    <script src="~/libs/rxjs/rxjs.umd.min.js" type="text/javascript"></script>
+    <script src="~/js/global.js" type="text/javascript"></script>
+
+
+    @if (TempData["AuthError"] is not null)
+    {
+        <script>
+            @if(TempData["AuthType"] is not null && (TempData["AuthType"] as string) == "Login"){
+                @:handleOpenLoginForm();
+            }
+            else 
+            {
+                @:handleOpenRegisterForm();
+            }
+        </script>
+    }
+
+</body>
+</html>
