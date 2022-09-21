@@ -20,6 +20,9 @@ namespace TheStory.Data.Configurations
                 .HasColumnType("varchar")
                 .HasMaxLength(120);
 
+            builder.Property(x => x.Salt)
+                .IsRequired();
+
             // Email column is unique
             builder.HasIndex(x => x.Email).IsUnique();
         }

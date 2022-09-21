@@ -12,6 +12,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     {
         options.ExpireTimeSpan = TimeSpan.FromHours(2);
         options.SlidingExpiration = true;
+        options.Cookie.Name = "TheStory";
     });
 builder.Services.AddDbContext<ApplicationContext>(options =>
 {

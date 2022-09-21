@@ -25,7 +25,8 @@ namespace TheStory.Controllers
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> Login([FromForm]AuthViewModel authViewModel, [FromQuery]string ReturnUrl)
+        [AllowAnonymous]
+        public async Task<IActionResult> Login([FromForm] AuthViewModel authViewModel, [FromQuery] string ReturnUrl)
         {
             TempData["AuthType"] = "Login";
             if (!ModelState.IsValid)
@@ -38,11 +39,21 @@ namespace TheStory.Controllers
             string password = authViewModel!.loginViewModel!.Password!;
             bool isPersistent = authViewModel!.loginViewModel!.IsPersistent;
 
-            string hashed = PasswordHasher.Hash(password);
-            var user = await _applicationContext.Users!.FirstOrDefaultAsync(x => x.Email == email && x.Password == PasswordHasher.Hash(password));
-            if(user is null)
+            var user = await _applicationContext.Users!.FirstOrDefaultAsync(x => x.Email == email);
+            if (user is null)
             {
-                TempData["AuthError"] = new string[] { 
+                TempData["AuthError"] = new string[] {
+                    "Email or Password is incorrect"
+                };
+                return Redirect(ReturnUrl);
+            }
+
+            string salt = user!.Salt!;
+            string hashedPassword = user!.Password!;
+            if (!PasswordHasher.CheckHash(password, salt, hashedPassword))
+            {
+                TempData["AuthError"] = new string[]
+                {
                     "Email or Password is incorrect"
                 };
                 return Redirect(ReturnUrl);
@@ -61,11 +72,12 @@ namespace TheStory.Controllers
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
-            return Ok(authViewModel!.loginViewModel!.IsPersistent.ToString());
+            return Ok(ReturnUrl);
         }
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Register([FromForm] AuthViewModel authViewModel, [FromQuery]string ReturnUrl)
         {
             TempData["AuthType"] = "Register";
@@ -77,11 +89,13 @@ namespace TheStory.Controllers
 
             string email = authViewModel.RegisterViewModel!.Email!;
             string password = authViewModel.RegisterViewModel!.Password!;
+            string salt = PasswordHasher.GetSalt();
 
             var newUser = new User
             {
                 Email = email,
-                Password = PasswordHasher.Hash(password)
+                Password = PasswordHasher.Hash(salt, password),
+                Salt = salt
             };
 
             try
@@ -100,7 +114,7 @@ namespace TheStory.Controllers
                 return Redirect(ReturnUrl);
             }
 
-            return Redirect("/Home/Index");
+            return Redirect(ReturnUrl);
         }
     }
 }
