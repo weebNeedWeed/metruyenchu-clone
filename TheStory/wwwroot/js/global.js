@@ -107,3 +107,16 @@ merge(fromEvent(registerButtons[0], "click"), fromEvent(registerButtons[1], "cli
 fromEvent(document.getElementById("close-form-button"), "click").subscribe(() => {
     document.getElementById("authentication-box").classList.add("hidden")
 });
+
+const toastBox = document.getElementById("toast-box");
+const handleOpenToastBox = (message) => {
+    const toastMessage = document.querySelector("#toast-box p");
+
+    toastBox.classList.add("bottom-[20px]");
+
+    toastMessage.innerHTML = message;
+};
+const handleCloseToastBox = () => {
+    toastBox.classList.remove("bottom-[20px]");
+};
+fromEvent(document.querySelector("#toast-box button"), "click").subscribe(handleCloseToastBox);

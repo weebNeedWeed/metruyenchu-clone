@@ -72,7 +72,8 @@ namespace TheStory.Controllers
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
-            return Ok(ReturnUrl);
+            TempData["message"] = "Login success";
+            return Redirect(ReturnUrl);
         }
 
         [HttpPost]
@@ -114,6 +115,7 @@ namespace TheStory.Controllers
                 return Redirect(ReturnUrl);
             }
 
+            TempData["message"] = "Register success, please login!";
             return Redirect(ReturnUrl);
         }
     }

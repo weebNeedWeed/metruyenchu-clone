@@ -230,7 +230,14 @@
     </div>
 
     <!--Toast Box-->
-    <div class=""></div>
+    <div id="toast-box" class="fixed w-[75vw] max-w-[400px] bg-gray-700 rounded h-[50px] z-50 left-[50%] translate-x-[-50%] transition-all bottom-[-100%]">
+        <div class="flex flex-row justify-center items-center h-full w-full text-slate-50 text-base p-4 gap-x-2">
+            <p class="grow"></p>
+            <button>
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+    </div>
 
     <script src="~/libs/rxjs/rxjs.umd.min.js" type="text/javascript"></script>
     <script src="~/js/global.js" type="text/javascript"></script>
@@ -246,6 +253,13 @@
             {
                 @:handleOpenRegisterForm();
             }
+        </script>
+    }
+
+    @if(TempData["Message"] is not null)
+    {
+        <script>
+            handleOpenToastBox("@TempData["message"]");
         </script>
     }
 
