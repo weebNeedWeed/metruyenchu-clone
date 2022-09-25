@@ -2,16 +2,13 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using TheStory.Data;
-using TheStory.ViewModels;
-using TheStory.Models;
-using System.Security.Cryptography;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
+using System.Security.Claims;
+using TheStory.Data;
+using TheStory.Models;
 using TheStory.Utilities;
-using System.ComponentModel.DataAnnotations;
+using TheStory.ViewModels;
 
 namespace TheStory.Controllers
 {

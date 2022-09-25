@@ -115,6 +115,9 @@ const handleOpenToastBox = (message) => {
     toastBox.classList.add("bottom-[20px]");
 
     toastMessage.innerHTML = message;
+
+    const autoHide = 8000; // after 8 seconds, the toastbox will be closed
+    setTimeout(handleCloseToastBox, autoHide);
 };
 const handleCloseToastBox = () => {
     toastBox.classList.remove("bottom-[20px]");
