@@ -13,10 +13,12 @@ namespace TheStory.Data
             builder.ApplyConfiguration(new UserConfiguration());
             builder.ApplyConfiguration(new ChapterConfiguration());
             builder.ApplyConfiguration(new BookConfiguration());
+            builder.ApplyConfiguration(new GenreConfiguration());
         }
 
         public DbSet<User>? Users { get; set; }
         public DbSet<Book>? Books { get; set; }
         public DbSet<Chapter>? Chapters { get; set; }
+        public DbSet<Genre>? Genres { get; set; }
     }
 }

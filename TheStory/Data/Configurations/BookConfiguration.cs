@@ -23,6 +23,12 @@ namespace TheStory.Data.Configurations
             builder.Property(x => x.ImageUrl)
                 .IsRequired()
                 .HasMaxLength(120);
+
+            builder.HasOne(x => x.Genre)
+                .WithMany(x => x.Books)
+                .HasForeignKey(x => x.GenreId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
