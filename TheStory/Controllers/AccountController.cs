@@ -59,12 +59,14 @@ namespace TheStory.Controllers
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Email, email),
-                new Claim(ClaimTypes.IsPersistent, isPersistent.ToString())
+                new Claim(ClaimTypes.IsPersistent, isPersistent.ToString()),
+                new Claim(ClaimTypes.Role, ((RoleEnum)user!.Role!).ToString())
             };
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var authProperties = new AuthenticationProperties
             {
-                IsPersistent = isPersistent
+                IsPersistent = isPersistent,
+                ExpiresUtc = DateTime.UtcNow.AddMonths(1)
             };
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
@@ -76,7 +78,7 @@ namespace TheStory.Controllers
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         [AllowAnonymous]
-        public async Task<IActionResult> Register([FromForm] AuthViewModel authViewModel, [FromQuery]string ReturnUrl)
+        public async Task<IActionResult> Register([FromForm] AuthViewModel authViewModel, [FromQuery] string ReturnUrl)
         {
             TempData["AuthType"] = "Register";
             if (!ModelState.IsValid)
@@ -93,7 +95,8 @@ namespace TheStory.Controllers
             {
                 Email = email,
                 Password = PasswordHasher.Hash(salt, password),
-                Salt = salt
+                Salt = salt,
+                Role = RoleEnum.Member
             };
 
             try
@@ -102,7 +105,7 @@ namespace TheStory.Controllers
                 await _applicationContext.SaveChangesAsync();
             }
             catch (DbUpdateException ex)
-            when(ex?.InnerException is SqlException sqlEx && (sqlEx.Number == 2601 || sqlEx.Number == 2627))
+            when (ex?.InnerException is SqlException sqlEx && (sqlEx.Number == 2601 || sqlEx.Number == 2627))
             {
                 // Handle user types existed email
                 TempData["AuthError"] = new string[]

@@ -123,3 +123,9 @@ const handleCloseToastBox = () => {
     toastBox.classList.remove("bottom-[20px]");
 };
 fromEvent(document.querySelector("#toast-box button"), "click").subscribe(handleCloseToastBox);
+
+// Open login form immediately when query string has ReturnUrl key
+const queryParams = new URLSearchParams(window.location.search);
+if (queryParams.has("ReturnUrl")) {
+    handleOpenLoginForm();
+}

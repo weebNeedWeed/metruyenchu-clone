@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using TheStory.Data;
-using TheStory.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +12,12 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.ExpireTimeSpan = TimeSpan.FromHours(2);
         options.SlidingExpiration = true;
         options.Cookie.Name = "TheStory";
+        options.LoginPath = new PathString("/");
     });
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdministratorOnly", policy => policy.RequireClaim("Role", "Administrator"));
+});
 builder.Services.AddDbContext<ApplicationContext>(options =>
 {
     options.UseSqlServer(connectionString: builder.Configuration.GetConnectionString("DefaultConnection"));

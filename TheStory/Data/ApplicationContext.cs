@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TheStory.Models;
 using TheStory.Data.Configurations;
+using TheStory.Extensions;
 
 namespace TheStory.Data
 {
@@ -14,6 +15,8 @@ namespace TheStory.Data
             builder.ApplyConfiguration(new ChapterConfiguration());
             builder.ApplyConfiguration(new BookConfiguration());
             builder.ApplyConfiguration(new GenreConfiguration());
+
+            builder.Seed();
         }
 
         public DbSet<User>? Users { get; set; }
