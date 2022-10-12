@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using TheStory.Data;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdministratorOnly", policy => policy.RequireClaim("Role", "Administrator"));
+    options.AddPolicy("AdministratorOnly", policy => policy.RequireRole("Administrator"));
 });
 builder.Services.AddDbContext<ApplicationContext>(options =>
 {
