@@ -34,18 +34,28 @@
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </button>
                         </form>
-                        <button class="login-button flex flex-row w-full text-xl font-semibold gap-x-[10px] border-solid border-t-2 py-[10px] px-[20px]">
-                            <span class="text-[#b78a28] w-[25px]">
-                                <i class="fa-solid fa-user"></i>
-                            </span>
-                            <span class="text-[1.2rem]">Đăng nhập</span>
-                        </button>
-                        <button class="register-button flex flex-row w-full text-xl font-semibold gap-x-[10px] border-solid border-t-2 py-[10px] px-[20px]">
-                            <span class="text-[#b78a28] w-[25px]">
-                                <i class="fa-solid fa-user-pen"></i>
-                            </span>
-                            <span class="text-[1.2rem]">Đăng ký</span>
-                        </button>
+
+                        @if (User!.Identity!.IsAuthenticated)
+                        {
+                            <partial name="_LoginPartial"/>
+                        }
+                        else
+                        {
+                            <button class="login-button flex flex-row w-full text-xl font-semibold gap-x-[10px] border-solid border-t-2 py-[10px] px-[20px]">
+                                <span class="text-[#b78a28] w-[25px]">
+                                    <i class="fa-solid fa-user"></i>
+                                </span>
+                                <span class="text-[1.2rem]">Đăng nhập</span>
+                            </button>
+                            <button class="register-button flex flex-row w-full text-xl font-semibold gap-x-[10px] border-solid border-t-2 py-[10px] px-[20px]">
+                                <span class="text-[#b78a28] w-[25px]">
+                                    <i class="fa-solid fa-user-pen"></i>
+                                </span>
+                                <span class="text-[1.2rem]">Đăng ký</span>
+                            </button>
+                        }
+
+
                         <button class="flex flex-row w-full text-xl font-semibold border-solid border-t-2 py-[10px] px-[20px] justify-between" id="genre-mobile-button">
                             <span class="flex flex-row gap-x-[10px]">
                                 <span class="text-[#b78a28] w-[25px]">
@@ -167,9 +177,10 @@
         </div>
         @{
             StringValues ReturnUrl;
-            if(!Context.Request.Query.TryGetValue("ReturnUrl", out ReturnUrl)){
+            if (!Context.Request.Query.TryGetValue("ReturnUrl", out ReturnUrl))
+            {
                 ReturnUrl = new StringValues(Context.Request.Path);
-            }  
+            }
         }
         <form id="login-form" method="POST" class="px-8" asp-action="Login" asp-controller="Account" asp-route-ReturnUrl="@ReturnUrl.ToString()">
             <div class="mt-4">
@@ -252,17 +263,18 @@
     @if (TempData["AuthError"] is not null)
     {
         <script>
-            @if(TempData["AuthType"] is not null && (TempData["AuthType"] as string) == "Login"){
+            @if (TempData["AuthType"] is not null && (TempData["AuthType"] as string) == "Login")
+            {
                 @:handleOpenLoginForm();
             }
-            else 
+            else
             {
                 @:handleOpenRegisterForm();
             }
         </script>
     }
 
-    @if(TempData["Message"] is not null)
+    @if (TempData["Message"] is not null)
     {
         <script>
             handleOpenToastBox("@TempData["message"]");

@@ -16,7 +16,8 @@ namespace TheStory.Extensions
                     Email = "admin@gmail.com",
                     Password = PasswordHasher.Hash(salt: salt, rawPassword: "admin"),
                     Salt = salt,
-                    Role = RoleEnum.Administrator
+                    Role = RoleEnum.Administrator,
+                    UserName = "admin"
                 });
         }
     }

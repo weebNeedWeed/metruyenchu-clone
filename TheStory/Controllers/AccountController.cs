@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using System.Text;
 using TheStory.Data;
 using TheStory.Models;
 using TheStory.Utilities;
@@ -15,6 +16,24 @@ namespace TheStory.Controllers
     public class AccountController : Controller
     {
         private readonly ApplicationContext _applicationContext;
+
+        private string _generateUserName()
+        {
+            string baseStr = "123456789abcdefghiklmnpq!@#$%^&*()";
+            int userNameLength = 7;
+
+            StringBuilder result = new();
+
+            Random rnd = new();
+            for(int i = 1; i <= userNameLength; ++i)
+            {
+                char rndChar = baseStr[rnd.Next(0, baseStr.Length - 1)];
+                result.Append(rndChar);
+            }
+
+            return result.ToString();
+        }
+
         public AccountController(ApplicationContext applicationContext)
         {
             _applicationContext = applicationContext;
@@ -60,7 +79,8 @@ namespace TheStory.Controllers
             {
                 new Claim(ClaimTypes.Email, email),
                 new Claim(ClaimTypes.IsPersistent, isPersistent.ToString()),
-                new Claim(ClaimTypes.Role, ((RoleEnum)user!.Role!).ToString())
+                new Claim(ClaimTypes.Role, ((RoleEnum)user!.Role!).ToString()),
+                new Claim(ClaimTypes.Name, user!.UserName!)
             };
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var authProperties = new AuthenticationProperties
@@ -96,7 +116,8 @@ namespace TheStory.Controllers
                 Email = email,
                 Password = PasswordHasher.Hash(salt, password),
                 Salt = salt,
-                Role = RoleEnum.Member
+                Role = RoleEnum.Member,
+                UserName = _generateUserName()
             };
 
             try

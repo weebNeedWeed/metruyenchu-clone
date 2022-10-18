@@ -20,6 +20,11 @@ namespace TheStory.Data.Configurations
                 .HasColumnType("varchar")
                 .HasMaxLength(120);
 
+            builder.Property(o => o.UserName)
+                .IsRequired()
+                .HasMaxLength(120)
+                .HasColumnType("varchar");
+
             builder.Property(x => x.Salt)
                 .IsRequired();
 
